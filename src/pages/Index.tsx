@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Eye, EyeOff, Mail, Lock, User, Brain } from 'lucide-react';
 
@@ -21,19 +20,21 @@ const EducationTransformationBackground = () => {
   const [particles, setParticles] = useState([]);
   const containerRef = useRef(null);
 
-  // Generate transformation particles
+  // Generate transformation particles with improved movement
   useEffect(() => {
     const generateParticles = () => {
       const newParticles = [];
-      for (let i = 0; i < 30; i++) {
+      for (let i = 0; i < 40; i++) {
         newParticles.push({
           id: i,
           x: Math.random() * 100,
           y: Math.random() * 100,
-          size: Math.random() * 4 + 2,
-          opacity: Math.random() * 0.8 + 0.2,
-          speed: Math.random() * 0.3 + 0.1,
-          direction: Math.random() * Math.PI * 2
+          size: Math.random() * 6 + 1,
+          opacity: Math.random() * 0.9 + 0.1,
+          speed: Math.random() * 0.2 + 0.05,
+          direction: Math.random() * Math.PI * 2,
+          wobble: Math.random() * 0.02 + 0.01,
+          phase: Math.random() * Math.PI * 2
         });
       }
       setParticles(newParticles);
@@ -41,48 +42,50 @@ const EducationTransformationBackground = () => {
 
     generateParticles();
     
-    // Animate particles
+    // Smoother particle animation with wobble effect
     const interval = setInterval(() => {
       setParticles(prev => prev.map(p => ({
         ...p,
-        x: (p.x + Math.cos(p.direction) * p.speed) % 100,
-        y: (p.y + Math.sin(p.direction) * p.speed) % 100
+        x: (p.x + Math.cos(p.direction) * p.speed + Math.sin(p.phase) * p.wobble) % 100,
+        y: (p.y + Math.sin(p.direction) * p.speed + Math.cos(p.phase) * p.wobble) % 100,
+        phase: p.phase + 0.1
       })));
-    }, 50);
+    }, 32);
 
     return () => clearInterval(interval);
   }, []);
 
-  // Auto-progress transformation
+  // Smoother auto-progress transformation with easing
   useEffect(() => {
     const interval = setInterval(() => {
       setTransformationStage(prev => (prev + 1) % 4);
-    }, 3000);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, []);
 
   const TraditionalStudent = ({ opacity, scale }) => (
     <div 
-      className="absolute transition-all duration-1000"
+      className="absolute transition-all duration-2000 ease-in-out transform-gpu"
       style={{
         left: '15%',
         top: '40%',
         opacity: opacity,
-        transform: `scale(${scale})`
+        transform: `scale(${scale}) translateZ(0)`,
+        filter: `blur(${(1 - opacity) * 2}px)`
       }}
     >
-      <div className="relative">
-        {/* Realistic head with proper proportions */}
-        <div className="w-20 h-24 bg-gradient-to-b from-peach-300 to-peach-400 rounded-full mb-2 relative border-2 border-white shadow-xl overflow-hidden">
+      <div className="relative animate-float">
+        {/* More realistic head with proper proportions */}
+        <div className="w-20 h-24 bg-gradient-to-b from-peach-300 to-peach-400 rounded-full mb-2 relative border-2 border-white shadow-xl overflow-hidden transition-all duration-1000">
           {/* Hair - more realistic style */}
-          <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-22 h-12 bg-gradient-to-b from-amber-800 to-amber-900 rounded-t-full border-2 border-amber-700"></div>
+          <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-22 h-12 bg-gradient-to-b from-amber-800 to-amber-900 rounded-t-full border-2 border-amber-700 animate-subtle-sway"></div>
           {/* Bangs */}
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-16 h-4 bg-amber-800 rounded-b-lg"></div>
           
           {/* More realistic facial features */}
-          <div className="absolute top-8 left-6 w-2 h-3 bg-gradient-to-b from-gray-800 to-gray-900 rounded-full"></div>
-          <div className="absolute top-8 right-6 w-2 h-3 bg-gradient-to-b from-gray-800 to-gray-900 rounded-full"></div>
+          <div className="absolute top-8 left-6 w-2 h-3 bg-gradient-to-b from-gray-800 to-gray-900 rounded-full animate-blink"></div>
+          <div className="absolute top-8 right-6 w-2 h-3 bg-gradient-to-b from-gray-800 to-gray-900 rounded-full animate-blink"></div>
           {/* Eyebrows */}
           <div className="absolute top-7 left-5 w-3 h-1 bg-amber-700 rounded-full transform -rotate-12"></div>
           <div className="absolute top-7 right-5 w-3 h-1 bg-amber-700 rounded-full transform rotate-12"></div>
@@ -94,8 +97,8 @@ const EducationTransformationBackground = () => {
           <div className="absolute top-14 left-1/2 transform -translate-x-1/2 w-4 h-2 bg-red-600 rounded-full border border-red-700"></div>
           
           {/* Cheeks - flushed from stress */}
-          <div className="absolute top-11 left-3 w-3 h-3 bg-red-300 rounded-full opacity-60"></div>
-          <div className="absolute top-11 right-3 w-3 h-3 bg-red-300 rounded-full opacity-60"></div>
+          <div className="absolute top-11 left-3 w-3 h-3 bg-red-300 rounded-full opacity-60 animate-pulse-slow"></div>
+          <div className="absolute top-11 right-3 w-3 h-3 bg-red-300 rounded-full opacity-60 animate-pulse-slow"></div>
         </div>
         
         {/* More realistic body with school uniform */}
@@ -104,27 +107,27 @@ const EducationTransformationBackground = () => {
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-20 h-6 bg-navy-500 rounded-t-lg border-b-2 border-navy-700"></div>
           
           {/* School tie with pattern */}
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-4 h-20 bg-gradient-to-b from-red-600 to-red-800 border border-red-700">
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-4 h-20 bg-gradient-to-b from-red-600 to-red-800 border border-red-700 animate-gentle-sway">
             <div className="absolute top-2 w-full h-1 bg-yellow-400"></div>
             <div className="absolute top-6 w-full h-1 bg-yellow-400"></div>
             <div className="absolute top-10 w-full h-1 bg-yellow-400"></div>
           </div>
           
           {/* Blazer buttons */}
-          <div className="absolute top-8 left-3 w-2 h-2 bg-gold-400 rounded-full border border-gold-600"></div>
-          <div className="absolute top-12 left-3 w-2 h-2 bg-gold-400 rounded-full border border-gold-600"></div>
-          <div className="absolute top-16 left-3 w-2 h-2 bg-gold-400 rounded-full border border-gold-600"></div>
+          <div className="absolute top-8 left-3 w-2 h-2 bg-gold-400 rounded-full border border-gold-600 animate-glint"></div>
+          <div className="absolute top-12 left-3 w-2 h-2 bg-gold-400 rounded-full border border-gold-600 animate-glint" style={{animationDelay: '0.5s'}}></div>
+          <div className="absolute top-16 left-3 w-2 h-2 bg-gold-400 rounded-full border border-gold-600 animate-glint" style={{animationDelay: '1s'}}></div>
           
-          {/* Realistic arms */}
-          <div className="absolute -left-4 top-8 w-7 h-20 bg-gradient-to-b from-navy-600 to-navy-800 rounded-full transform rotate-15 border-2 border-white shadow-md"></div>
-          <div className="absolute -right-4 top-8 w-7 h-20 bg-gradient-to-b from-navy-600 to-navy-800 rounded-full transform -rotate-15 border-2 border-white shadow-md"></div>
+          {/* Realistic arms with subtle movement */}
+          <div className="absolute -left-4 top-8 w-7 h-20 bg-gradient-to-b from-navy-600 to-navy-800 rounded-full transform rotate-15 border-2 border-white shadow-md animate-arm-sway"></div>
+          <div className="absolute -right-4 top-8 w-7 h-20 bg-gradient-to-b from-navy-600 to-navy-800 rounded-full transform -rotate-15 border-2 border-white shadow-md animate-arm-sway-reverse"></div>
           
           {/* Hands holding heavy textbooks */}
           <div className="absolute -left-2 top-24 w-4 h-4 bg-peach-400 rounded-full border border-peach-500"></div>
           <div className="absolute -right-2 top-24 w-4 h-4 bg-peach-400 rounded-full border border-peach-500"></div>
           
-          {/* Stack of heavy textbooks */}
-          <div className="absolute top-16 left-1/2 transform -translate-x-1/2 space-y-1">
+          {/* Stack of heavy textbooks with subtle bounce */}
+          <div className="absolute top-16 left-1/2 transform -translate-x-1/2 space-y-1 animate-book-weight">
             <div className="w-10 h-3 bg-red-700 rounded border-2 border-red-800 shadow-lg"></div>
             <div className="w-10 h-3 bg-blue-700 rounded border-2 border-blue-800 shadow-lg"></div>
             <div className="w-10 h-3 bg-green-700 rounded border-2 border-green-800 shadow-lg"></div>
@@ -132,7 +135,7 @@ const EducationTransformationBackground = () => {
           
           {/* School pocket with emblem */}
           <div className="absolute top-10 right-2 w-6 h-6 bg-navy-700 rounded border border-navy-800">
-            <div className="absolute inset-1 w-4 h-4 bg-gold-400 rounded-full border border-gold-600"></div>
+            <div className="absolute inset-1 w-4 h-4 bg-gold-400 rounded-full border border-gold-600 animate-glint"></div>
           </div>
         </div>
         
@@ -149,56 +152,57 @@ const EducationTransformationBackground = () => {
         </div>
       </div>
       
-      {/* Enhanced stress and confusion indicators */}
+      {/* Enhanced stress and confusion indicators with smooth animation */}
       <div className="absolute -top-16 -right-16 flex space-x-2">
-        <div className="w-6 h-6 bg-white rounded-full opacity-90 animate-pulse border-3 border-gray-400 shadow-xl flex items-center justify-center">
-          <span className="text-red-600 font-bold text-sm">?</span>
+        <div className="w-6 h-6 bg-white rounded-full opacity-90 animate-confused-bounce border-3 border-gray-400 shadow-xl flex items-center justify-center">
+          <span className="text-red-600 font-bold text-sm animate-pulse">?</span>
         </div>
-        <div className="w-8 h-8 bg-white rounded-full opacity-80 animate-pulse border-3 border-gray-400 shadow-xl flex items-center justify-center" style={{animationDelay: '0.5s'}}>
-          <span className="text-red-700 font-bold">??</span>
+        <div className="w-8 h-8 bg-white rounded-full opacity-80 animate-confused-bounce border-3 border-gray-400 shadow-xl flex items-center justify-center" style={{animationDelay: '0.5s'}}>
+          <span className="text-red-700 font-bold animate-pulse">??</span>
         </div>
-        <div className="w-10 h-10 bg-white rounded-full opacity-70 flex items-center justify-center animate-pulse border-3 border-gray-400 shadow-xl" style={{animationDelay: '1s'}}>
-          <span className="text-red-800 font-bold text-lg">?!</span>
+        <div className="w-10 h-10 bg-white rounded-full opacity-70 flex items-center justify-center animate-confused-bounce border-3 border-gray-400 shadow-xl" style={{animationDelay: '1s'}}>
+          <span className="text-red-800 font-bold text-lg animate-pulse">?!</span>
         </div>
       </div>
       
-      {/* Sweat drops for stress */}
+      {/* Sweat drops for stress with realistic drip */}
       <div className="absolute top-2 right-2 space-y-2">
-        <div className="w-2 h-3 bg-cyan-300 rounded-full opacity-80 animate-bounce border border-cyan-400"></div>
-        <div className="w-2 h-3 bg-cyan-300 rounded-full opacity-70 animate-bounce border border-cyan-400" style={{animationDelay: '0.3s'}}></div>
+        <div className="w-2 h-3 bg-cyan-300 rounded-full opacity-80 animate-sweat-drop border border-cyan-400"></div>
+        <div className="w-2 h-3 bg-cyan-300 rounded-full opacity-70 animate-sweat-drop border border-cyan-400" style={{animationDelay: '1s'}}></div>
       </div>
     </div>
   );
 
   const TraditionalTeacher = ({ opacity, scale }) => (
     <div 
-      className="absolute transition-all duration-1000"
+      className="absolute transition-all duration-2000 ease-in-out transform-gpu"
       style={{
         right: '15%',
         top: '35%',
         opacity: opacity,
-        transform: `scale(${scale})`
+        transform: `scale(${scale}) translateZ(0)`,
+        filter: `blur(${(1 - opacity) * 2}px)`
       }}
     >
-      <div className="relative">
+      <div className="relative animate-professional-stance">
         {/* More realistic teacher head */}
         <div className="w-22 h-26 bg-gradient-to-b from-peach-200 to-peach-300 rounded-full mb-2 relative border-2 border-white shadow-xl overflow-hidden">
           {/* Professional hairstyle */}
-          <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-24 h-14 bg-gradient-to-b from-gray-600 to-gray-800 rounded-t-full border-2 border-gray-700"></div>
+          <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-24 h-14 bg-gradient-to-b from-gray-600 to-gray-800 rounded-t-full border-2 border-gray-700 animate-subtle-sway"></div>
           {/* Side part */}
           <div className="absolute top-1 left-8 w-8 h-6 bg-gray-600 rounded-br-full"></div>
           
           {/* Professional glasses - more detailed */}
-          <div className="absolute top-9 left-1/2 transform -translate-x-1/2 w-14 h-8 border-3 border-gray-900 rounded-full bg-transparent">
-            <div className="absolute left-1 top-1 w-5 h-5 bg-white rounded-full opacity-30"></div>
-            <div className="absolute right-1 top-1 w-5 h-5 bg-white rounded-full opacity-30"></div>
+          <div className="absolute top-9 left-1/2 transform -translate-x-1/2 w-14 h-8 border-3 border-gray-900 rounded-full bg-transparent animate-glasses-glint">
+            <div className="absolute left-1 top-1 w-5 h-5 bg-white rounded-full opacity-30 animate-lens-reflect"></div>
+            <div className="absolute right-1 top-1 w-5 h-5 bg-white rounded-full opacity-30 animate-lens-reflect"></div>
           </div>
           {/* Glasses bridge */}
           <div className="absolute top-11 left-1/2 transform -translate-x-1/2 w-3 h-2 bg-gray-900 rounded"></div>
           
           {/* Eyes behind glasses */}
-          <div className="absolute top-10 left-7 w-2 h-3 bg-gray-800 rounded-full"></div>
-          <div className="absolute top-10 right-7 w-2 h-3 bg-gray-800 rounded-full"></div>
+          <div className="absolute top-10 left-7 w-2 h-3 bg-gray-800 rounded-full animate-professional-blink"></div>
+          <div className="absolute top-10 right-7 w-2 h-3 bg-gray-800 rounded-full animate-professional-blink"></div>
           
           {/* Eyebrows */}
           <div className="absolute top-8 left-6 w-4 h-1 bg-gray-700 rounded-full"></div>
@@ -218,27 +222,27 @@ const EducationTransformationBackground = () => {
           <div className="absolute top-2 right-2 w-6 h-12 bg-green-600 rounded-bl-full border border-green-800"></div>
           
           {/* Professional tie with pattern */}
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-5 h-24 bg-gradient-to-b from-red-700 to-red-900 border border-red-800">
-            <div className="absolute top-3 w-full h-1 bg-gold-400"></div>
-            <div className="absolute top-7 w-full h-1 bg-gold-400"></div>
-            <div className="absolute top-11 w-full h-1 bg-gold-400"></div>
-            <div className="absolute top-15 w-full h-1 bg-gold-400"></div>
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-5 h-24 bg-gradient-to-b from-red-700 to-red-900 border border-red-800 animate-tie-flutter">
+            <div className="absolute top-3 w-full h-1 bg-gold-400 animate-pattern-shimmer"></div>
+            <div className="absolute top-7 w-full h-1 bg-gold-400 animate-pattern-shimmer" style={{animationDelay: '0.5s'}}></div>
+            <div className="absolute top-11 w-full h-1 bg-gold-400 animate-pattern-shimmer" style={{animationDelay: '1s'}}></div>
+            <div className="absolute top-15 w-full h-1 bg-gold-400 animate-pattern-shimmer" style={{animationDelay: '1.5s'}}></div>
           </div>
           
           {/* Suit buttons */}
-          <div className="absolute top-12 left-4 w-2 h-2 bg-gold-500 rounded-full border border-gold-700"></div>
-          <div className="absolute top-16 left-4 w-2 h-2 bg-gold-500 rounded-full border border-gold-700"></div>
-          <div className="absolute top-20 left-4 w-2 h-2 bg-gold-500 rounded-full border border-gold-700"></div>
+          <div className="absolute top-12 left-4 w-2 h-2 bg-gold-500 rounded-full border border-gold-700 animate-button-shine"></div>
+          <div className="absolute top-16 left-4 w-2 h-2 bg-gold-500 rounded-full border border-gold-700 animate-button-shine" style={{animationDelay: '0.5s'}}></div>
+          <div className="absolute top-20 left-4 w-2 h-2 bg-gold-500 rounded-full border border-gold-700 animate-button-shine" style={{animationDelay: '1s'}}></div>
           
           {/* Breast pocket with pen */}
           <div className="absolute top-8 right-3 w-6 h-8 bg-green-600 rounded border border-green-800">
-            <div className="absolute top-1 left-1 w-1 h-6 bg-blue-600 rounded-full"></div>
-            <div className="absolute top-1 right-1 w-1 h-6 bg-red-600 rounded-full"></div>
+            <div className="absolute top-1 left-1 w-1 h-6 bg-blue-600 rounded-full animate-pen-glint"></div>
+            <div className="absolute top-1 right-1 w-1 h-6 bg-red-600 rounded-full animate-pen-glint" style={{animationDelay: '0.5s'}}></div>
           </div>
           
-          {/* Realistic arms */}
-          <div className="absolute -left-5 top-10 w-8 h-22 bg-gradient-to-b from-green-700 to-green-900 rounded-full transform rotate-45 border-2 border-white shadow-md"></div>
-          <div className="absolute -right-5 top-10 w-8 h-22 bg-gradient-to-b from-green-700 to-green-900 rounded-full transform -rotate-12 border-2 border-white shadow-md"></div>
+          {/* Realistic arms with teaching gestures */}
+          <div className="absolute -left-5 top-10 w-8 h-22 bg-gradient-to-b from-green-700 to-green-900 rounded-full transform rotate-45 border-2 border-white shadow-md animate-teaching-gesture"></div>
+          <div className="absolute -right-5 top-10 w-8 h-22 bg-gradient-to-b from-green-700 to-green-900 rounded-full transform -rotate-12 border-2 border-white shadow-md animate-arm-rest"></div>
           
           {/* Hands */}
           <div className="absolute -left-2 top-28 w-5 h-5 bg-peach-300 rounded-full border border-peach-400"></div>
@@ -253,50 +257,50 @@ const EducationTransformationBackground = () => {
         
         {/* Professional shoes */}
         <div className="flex justify-center space-x-1 mt-1">
-          <div className="w-7 h-5 bg-black rounded-lg border border-gray-600 shadow-lg">
-            <div className="w-full h-2 bg-gray-700 rounded-t-lg"></div>
+          <div className="w-7 h-5 bg-black rounded-lg border border-gray-600 shadow-lg animate-shoe-polish">
+            <div className="w-full h-2 bg-gray-700 rounded-t-lg animate-leather-shine"></div>
           </div>
-          <div className="w-7 h-5 bg-black rounded-lg border border-gray-600 shadow-lg">
-            <div className="w-full h-2 bg-gray-700 rounded-t-lg"></div>
+          <div className="w-7 h-5 bg-black rounded-lg border border-gray-600 shadow-lg animate-shoe-polish">
+            <div className="w-full h-2 bg-gray-700 rounded-t-lg animate-leather-shine"></div>
           </div>
         </div>
       </div>
       
-      {/* Enhanced traditional blackboard */}
-      <div className="absolute -top-28 -left-28 w-36 h-24 bg-gradient-to-b from-gray-900 to-black rounded border-6 border-amber-800 shadow-2xl">
+      {/* Enhanced traditional blackboard with chalk dust */}
+      <div className="absolute -top-28 -left-28 w-36 h-24 bg-gradient-to-b from-gray-900 to-black rounded border-6 border-amber-800 shadow-2xl animate-blackboard-dust">
         <div className="p-4 text-white text-sm">
-          <div className="w-full h-2 bg-white rounded mb-2 opacity-90"></div>
-          <div className="w-4/5 h-2 bg-white rounded mb-2 opacity-80"></div>
-          <div className="w-3/5 h-2 bg-white rounded mb-2 opacity-70"></div>
-          <div className="w-2/3 h-2 bg-white rounded opacity-60"></div>
+          <div className="w-full h-2 bg-white rounded mb-2 opacity-90 animate-chalk-line"></div>
+          <div className="w-4/5 h-2 bg-white rounded mb-2 opacity-80 animate-chalk-line" style={{animationDelay: '0.5s'}}></div>
+          <div className="w-3/5 h-2 bg-white rounded mb-2 opacity-70 animate-chalk-line" style={{animationDelay: '1s'}}></div>
+          <div className="w-2/3 h-2 bg-white rounded opacity-60 animate-chalk-line" style={{animationDelay: '1.5s'}}></div>
           
           {/* Chalk and eraser */}
-          <div className="absolute bottom-2 right-2 w-3 h-1 bg-white rounded-full opacity-80"></div>
-          <div className="absolute bottom-2 right-6 w-4 h-2 bg-yellow-600 rounded opacity-70"></div>
+          <div className="absolute bottom-2 right-2 w-3 h-1 bg-white rounded-full opacity-80 animate-chalk-roll"></div>
+          <div className="absolute bottom-2 right-6 w-4 h-2 bg-yellow-600 rounded opacity-70 animate-eraser-dust"></div>
         </div>
         
         {/* Wooden frame details */}
-        <div className="absolute -top-1 left-0 w-full h-2 bg-amber-700 rounded-t"></div>
-        <div className="absolute -bottom-1 left-0 w-full h-2 bg-amber-700 rounded-b"></div>
-        <div className="absolute top-0 -left-1 w-2 h-full bg-amber-700 rounded-l"></div>
-        <div className="absolute top-0 -right-1 w-2 h-full bg-amber-700 rounded-r"></div>
+        <div className="absolute -top-1 left-0 w-full h-2 bg-amber-700 rounded-t animate-wood-grain"></div>
+        <div className="absolute -bottom-1 left-0 w-full h-2 bg-amber-700 rounded-b animate-wood-grain"></div>
+        <div className="absolute top-0 -left-1 w-2 h-full bg-amber-700 rounded-l animate-wood-grain"></div>
+        <div className="absolute top-0 -right-1 w-2 h-full bg-amber-700 rounded-r animate-wood-grain"></div>
       </div>
       
-      {/* Enhanced pointer/ruler */}
-      <div className="absolute -top-16 -left-16 w-20 h-2 bg-gradient-to-r from-amber-600 to-amber-800 rounded-full transform rotate-45 border border-amber-700 shadow-lg">
-        <div className="absolute top-0 left-2 w-1 h-full bg-amber-400"></div>
-        <div className="absolute top-0 right-2 w-1 h-full bg-amber-400"></div>
+      {/* Enhanced pointer/ruler with pointing animation */}
+      <div className="absolute -top-16 -left-16 w-20 h-2 bg-gradient-to-r from-amber-600 to-amber-800 rounded-full transform rotate-45 border border-amber-700 shadow-lg animate-pointer-tap">
+        <div className="absolute top-0 left-2 w-1 h-full bg-amber-400 animate-ruler-mark"></div>
+        <div className="absolute top-0 right-2 w-1 h-full bg-amber-400 animate-ruler-mark"></div>
       </div>
       
       {/* Traditional teaching method indicators */}
       <div className="absolute -top-12 right-0 flex flex-col space-y-2">
-        <div className="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center border-3 border-white shadow-xl">
+        <div className="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center border-3 border-white shadow-xl animate-method-pulse">
           <span className="text-white font-bold text-xs">📖</span>
         </div>
-        <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center border-3 border-white shadow-xl">
+        <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center border-3 border-white shadow-xl animate-method-pulse" style={{animationDelay: '0.5s'}}>
           <span className="text-white font-bold text-xs">✏️</span>
         </div>
-        <div className="w-8 h-8 bg-yellow-600 rounded-full flex items-center justify-center border-3 border-white shadow-xl">
+        <div className="w-8 h-8 bg-yellow-600 rounded-full flex items-center justify-center border-3 border-white shadow-xl animate-method-pulse" style={{animationDelay: '1s'}}>
           <span className="text-white font-bold text-xs">📏</span>
         </div>
       </div>
@@ -305,140 +309,146 @@ const EducationTransformationBackground = () => {
 
   const AITutor = ({ opacity, scale }) => (
     <div 
-      className="absolute transition-all duration-1000"
+      className="absolute transition-all duration-2000 ease-in-out transform-gpu"
       style={{
         left: '50%',
         top: '45%',
-        transform: `translate(-50%, -50%) scale(${scale})`,
-        opacity: opacity
+        transform: `translate(-50%, -50%) scale(${scale}) translateZ(0)`,
+        opacity: opacity,
+        filter: `blur(${(1 - opacity) * 1}px)`
       }}
     >
-      <div className="relative">
+      <div className="relative animate-ai-float">
         {/* Enhanced AI Core with more realistic holographic appearance */}
-        <div className="w-48 h-48 rounded-full bg-gradient-to-br from-cyan-300 via-blue-500 via-purple-600 to-indigo-700 relative shadow-2xl border-4 border-white">
-          {/* Holographic rings */}
-          <div className="absolute inset-4 rounded-full border-4 border-cyan-300 opacity-60 animate-ping"></div>
-          <div className="absolute inset-8 rounded-full border-4 border-blue-400 opacity-80 animate-ping" style={{animationDelay: '0.5s'}}></div>
-          <div className="absolute inset-12 rounded-full border-4 border-purple-400 opacity-40 animate-ping" style={{animationDelay: '1s'}}></div>
+        <div className="w-48 h-48 rounded-full bg-gradient-to-br from-cyan-300 via-blue-500 via-purple-600 to-indigo-700 relative shadow-2xl border-4 border-white animate-ai-core-pulse">
+          {/* Holographic rings with improved animation */}
+          <div className="absolute inset-4 rounded-full border-4 border-cyan-300 opacity-60 animate-holo-ring-1"></div>
+          <div className="absolute inset-8 rounded-full border-4 border-blue-400 opacity-80 animate-holo-ring-2"></div>
+          <div className="absolute inset-12 rounded-full border-4 border-purple-400 opacity-40 animate-holo-ring-3"></div>
           
-          {/* Advanced AI facial features */}
-          <div className="absolute top-16 left-16 w-8 h-8 bg-white rounded-full flex items-center justify-center border-3 border-cyan-300 shadow-xl">
-            <div className="w-4 h-4 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-full animate-pulse">
-              <div className="absolute inset-1 bg-white rounded-full opacity-30"></div>
+          {/* Advanced AI facial features with intelligent glow */}
+          <div className="absolute top-16 left-16 w-8 h-8 bg-white rounded-full flex items-center justify-center border-3 border-cyan-300 shadow-xl animate-ai-eye-glow">
+            <div className="w-4 h-4 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-full animate-ai-iris">
+              <div className="absolute inset-1 bg-white rounded-full opacity-30 animate-eye-reflection"></div>
             </div>
           </div>
-          <div className="absolute top-16 right-16 w-8 h-8 bg-white rounded-full flex items-center justify-center border-3 border-cyan-300 shadow-xl">
-            <div className="w-4 h-4 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-full animate-pulse">
-              <div className="absolute inset-1 bg-white rounded-full opacity-30"></div>
+          <div className="absolute top-16 right-16 w-8 h-8 bg-white rounded-full flex items-center justify-center border-3 border-cyan-300 shadow-xl animate-ai-eye-glow">
+            <div className="w-4 h-4 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-full animate-ai-iris">
+              <div className="absolute inset-1 bg-white rounded-full opacity-30 animate-eye-reflection"></div>
             </div>
           </div>
           
           {/* Digital interface elements */}
-          <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 w-16 h-4 bg-white rounded-full border-3 border-cyan-300 flex items-center justify-center">
-            <div className="w-12 h-2 bg-gradient-to-r from-cyan-400 to-blue-600 rounded-full animate-pulse"></div>
+          <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 w-16 h-4 bg-white rounded-full border-3 border-cyan-300 flex items-center justify-center animate-ai-mouth">
+            <div className="w-12 h-2 bg-gradient-to-r from-cyan-400 to-blue-600 rounded-full animate-speech-wave"></div>
           </div>
           
-          {/* Neural network pattern */}
-          <div className="absolute top-1/2 left-8 w-12 h-1 bg-white rounded animate-pulse"></div>
-          <div className="absolute top-1/2 right-8 w-12 h-1 bg-white rounded animate-pulse"></div>
-          <div className="absolute top-8 left-1/2 w-1 h-12 bg-white rounded animate-pulse"></div>
-          <div className="absolute bottom-8 left-1/2 w-1 h-12 bg-white rounded animate-pulse"></div>
+          {/* Neural network pattern with data flow */}
+          <div className="absolute top-1/2 left-8 w-12 h-1 bg-white rounded animate-neural-pulse"></div>
+          <div className="absolute top-1/2 right-8 w-12 h-1 bg-white rounded animate-neural-pulse" style={{animationDelay: '0.5s'}}></div>
+          <div className="absolute top-8 left-1/2 w-1 h-12 bg-white rounded animate-neural-pulse" style={{animationDelay: '1s'}}></div>
+          <div className="absolute bottom-8 left-1/2 w-1 h-12 bg-white rounded animate-neural-pulse" style={{animationDelay: '1.5s'}}></div>
           
-          {/* Circuit board patterns */}
-          <div className="absolute top-20 left-20 w-8 h-8 border-2 border-white rounded opacity-60">
-            <div className="absolute inset-2 border border-white rounded"></div>
+          {/* Circuit board patterns with electrical flow */}
+          <div className="absolute top-20 left-20 w-8 h-8 border-2 border-white rounded opacity-60 animate-circuit-flow">
+            <div className="absolute inset-2 border border-white rounded animate-circuit-inner"></div>
           </div>
-          <div className="absolute top-20 right-20 w-8 h-8 border-2 border-white rounded opacity-60">
-            <div className="absolute inset-2 border border-white rounded"></div>
+          <div className="absolute top-20 right-20 w-8 h-8 border-2 border-white rounded opacity-60 animate-circuit-flow" style={{animationDelay: '0.5s'}}>
+            <div className="absolute inset-2 border border-white rounded animate-circuit-inner"></div>
           </div>
-          <div className="absolute bottom-20 left-20 w-8 h-8 border-2 border-white rounded opacity-60">
-            <div className="absolute inset-2 border border-white rounded"></div>
+          <div className="absolute bottom-20 left-20 w-8 h-8 border-2 border-white rounded opacity-60 animate-circuit-flow" style={{animationDelay: '1s'}}>
+            <div className="absolute inset-2 border border-white rounded animate-circuit-inner"></div>
           </div>
-          <div className="absolute bottom-20 right-20 w-8 h-8 border-2 border-white rounded opacity-60">
-            <div className="absolute inset-2 border border-white rounded"></div>
+          <div className="absolute bottom-20 right-20 w-8 h-8 border-2 border-white rounded opacity-60 animate-circuit-flow" style={{animationDelay: '1.5s'}}>
+            <div className="absolute inset-2 border border-white rounded animate-circuit-inner"></div>
           </div>
         </div>
         
-        {/* Enhanced floating knowledge orbs with more detail */}
-        <div className="absolute -top-12 -left-12 w-12 h-12 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-full animate-bounce shadow-2xl border-4 border-white flex items-center justify-center">
-          <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-            <span className="text-yellow-600 font-bold text-sm">📊</span>
+        {/* Enhanced floating knowledge orbs with orbital motion */}
+        <div className="absolute -top-12 -left-12 w-12 h-12 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-full shadow-2xl border-4 border-white flex items-center justify-center animate-orbital-1">
+          <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center animate-orb-glow">
+            <span className="text-yellow-600 font-bold text-sm animate-icon-pulse">📊</span>
           </div>
         </div>
-        <div className="absolute -top-12 -right-12 w-12 h-12 bg-gradient-to-br from-green-300 to-green-500 rounded-full animate-bounce shadow-2xl border-4 border-white flex items-center justify-center" style={{animationDelay: '0.2s'}}>
-          <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-            <span className="text-green-600 font-bold text-sm">🎯</span>
+        <div className="absolute -top-12 -right-12 w-12 h-12 bg-gradient-to-br from-green-300 to-green-500 rounded-full shadow-2xl border-4 border-white flex items-center justify-center animate-orbital-2">
+          <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center animate-orb-glow">
+            <span className="text-green-600 font-bold text-sm animate-icon-pulse">🎯</span>
           </div>
         </div>
-        <div className="absolute -bottom-12 -left-12 w-12 h-12 bg-gradient-to-br from-red-300 to-red-500 rounded-full animate-bounce shadow-2xl border-4 border-white flex items-center justify-center" style={{animationDelay: '0.4s'}}>
-          <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-            <span className="text-red-600 font-bold text-sm">🚀</span>
+        <div className="absolute -bottom-12 -left-12 w-12 h-12 bg-gradient-to-br from-red-300 to-red-500 rounded-full shadow-2xl border-4 border-white flex items-center justify-center animate-orbital-3">
+          <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center animate-orb-glow">
+            <span className="text-red-600 font-bold text-sm animate-icon-pulse">🚀</span>
           </div>
         </div>
-        <div className="absolute -bottom-12 -right-12 w-12 h-12 bg-gradient-to-br from-purple-300 to-purple-500 rounded-full animate-bounce shadow-2xl border-4 border-white flex items-center justify-center" style={{animationDelay: '0.6s'}}>
-          <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-            <span className="text-purple-600 font-bold text-sm">💡</span>
+        <div className="absolute -bottom-12 -right-12 w-12 h-12 bg-gradient-to-br from-purple-300 to-purple-500 rounded-full shadow-2xl border-4 border-white flex items-center justify-center animate-orbital-4">
+          <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center animate-orb-glow">
+            <span className="text-purple-600 font-bold text-sm animate-icon-pulse">💡</span>
           </div>
         </div>
         
-        {/* Enhanced data streams with more sophisticated design */}
-        <div className="absolute top-1/2 -left-32 w-28 h-3 bg-gradient-to-r from-transparent via-cyan-400 to-transparent animate-pulse rounded-full shadow-xl">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-50 rounded-full"></div>
+        {/* Enhanced data streams with particle effects */}
+        <div className="absolute top-1/2 -left-32 w-28 h-3 bg-gradient-to-r from-transparent via-cyan-400 to-transparent rounded-full shadow-xl animate-data-stream-horizontal">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-50 rounded-full animate-data-flow"></div>
+          <div className="absolute top-1/2 left-0 w-2 h-2 bg-cyan-300 rounded-full animate-data-particle" style={{animationDelay: '0s'}}></div>
+          <div className="absolute top-1/2 left-0 w-2 h-2 bg-cyan-300 rounded-full animate-data-particle" style={{animationDelay: '0.5s'}}></div>
         </div>
-        <div className="absolute top-1/2 -right-32 w-28 h-3 bg-gradient-to-r from-transparent via-cyan-400 to-transparent animate-pulse rounded-full shadow-xl">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-50 rounded-full"></div>
+        <div className="absolute top-1/2 -right-32 w-28 h-3 bg-gradient-to-r from-transparent via-cyan-400 to-transparent rounded-full shadow-xl animate-data-stream-horizontal">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-50 rounded-full animate-data-flow"></div>
+          <div className="absolute top-1/2 right-0 w-2 h-2 bg-cyan-300 rounded-full animate-data-particle-reverse" style={{animationDelay: '0s'}}></div>
+          <div className="absolute top-1/2 right-0 w-2 h-2 bg-cyan-300 rounded-full animate-data-particle-reverse" style={{animationDelay: '0.5s'}}></div>
         </div>
-        <div className="absolute -top-32 left-1/2 w-3 h-28 bg-gradient-to-b from-transparent via-cyan-400 to-transparent animate-pulse rounded-full shadow-xl">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white to-transparent opacity-50 rounded-full"></div>
+        <div className="absolute -top-32 left-1/2 w-3 h-28 bg-gradient-to-b from-transparent via-cyan-400 to-transparent rounded-full shadow-xl animate-data-stream-vertical">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white to-transparent opacity-50 rounded-full animate-data-flow-vertical"></div>
         </div>
-        <div className="absolute -bottom-32 left-1/2 w-3 h-28 bg-gradient-to-b from-transparent via-cyan-400 to-transparent animate-pulse rounded-full shadow-xl">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white to-transparent opacity-50 rounded-full"></div>
+        <div className="absolute -bottom-32 left-1/2 w-3 h-28 bg-gradient-to-b from-transparent via-cyan-400 to-transparent rounded-full shadow-xl animate-data-stream-vertical">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white to-transparent opacity-50 rounded-full animate-data-flow-vertical"></div>
         </div>
       </div>
       
-      {/* Enhanced holographic interface display */}
-      <div className="absolute -top-40 -left-24 w-48 h-32 bg-gradient-to-b from-cyan-300 via-blue-400 to-transparent rounded-xl opacity-90 p-4 border-3 border-cyan-200 shadow-2xl">
+      {/* Enhanced holographic interface display with typing effect */}
+      <div className="absolute -top-40 -left-24 w-48 h-32 bg-gradient-to-b from-cyan-300 via-blue-400 to-transparent rounded-xl opacity-90 p-4 border-3 border-cyan-200 shadow-2xl animate-holo-interface">
         <div className="text-white space-y-3 font-bold">
-          <div className="w-full h-2 bg-white rounded animate-pulse shadow-lg"></div>
-          <div className="w-4/5 h-2 bg-white rounded animate-pulse shadow-lg" style={{animationDelay: '0.3s'}}></div>
-          <div className="w-3/5 h-2 bg-white rounded animate-pulse shadow-lg" style={{animationDelay: '0.6s'}}></div>
-          <div className="w-2/3 h-2 bg-white rounded animate-pulse shadow-lg" style={{animationDelay: '0.9s'}}></div>
+          <div className="w-full h-2 bg-white rounded shadow-lg animate-typing-line-1"></div>
+          <div className="w-4/5 h-2 bg-white rounded shadow-lg animate-typing-line-2"></div>
+          <div className="w-3/5 h-2 bg-white rounded shadow-lg animate-typing-line-3"></div>
+          <div className="w-2/3 h-2 bg-white rounded shadow-lg animate-typing-line-4"></div>
           
-          {/* Interface icons */}
+          {/* Interface icons with status indicators */}
           <div className="flex space-x-2 mt-3">
-            <div className="w-4 h-4 bg-yellow-300 rounded-full border border-yellow-500"></div>
-            <div className="w-4 h-4 bg-green-300 rounded-full border border-green-500"></div>
-            <div className="w-4 h-4 bg-red-300 rounded-full border border-red-500"></div>
+            <div className="w-4 h-4 bg-yellow-300 rounded-full border border-yellow-500 animate-status-blink"></div>
+            <div className="w-4 h-4 bg-green-300 rounded-full border border-green-500 animate-status-blink" style={{animationDelay: '0.5s'}}></div>
+            <div className="w-4 h-4 bg-red-300 rounded-full border border-red-500 animate-status-blink" style={{animationDelay: '1s'}}></div>
           </div>
         </div>
         
-        {/* Holographic edge effect */}
-        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-cyan-300 to-transparent opacity-30"></div>
+        {/* Holographic edge effect with shimmer */}
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-cyan-300 to-transparent opacity-30 animate-holo-shimmer"></div>
       </div>
     </div>
   );
 
   const ModernStudent = ({ opacity, scale }) => (
     <div 
-      className="absolute transition-all duration-1000"
+      className="absolute transition-all duration-2000 ease-in-out transform-gpu"
       style={{
         left: '25%',
         top: '65%',
         opacity: opacity,
-        transform: `scale(${scale})`
+        transform: `scale(${scale}) translateZ(0)`,
+        filter: `blur(${(1 - opacity) * 2}px)`
       }}
     >
-      <div className="relative">
+      <div className="relative animate-happy-bounce">
         {/* More realistic modern student head */}
         <div className="w-20 h-24 bg-gradient-to-b from-peach-300 to-peach-400 rounded-full mb-2 relative border-2 border-white shadow-xl overflow-hidden">
           {/* Modern trendy hairstyle */}
-          <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-22 h-12 bg-gradient-to-b from-amber-600 to-amber-800 rounded-t-full border-2 border-amber-700"></div>
+          <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-22 h-12 bg-gradient-to-b from-amber-600 to-amber-800 rounded-t-full border-2 border-amber-700 animate-hair-sway"></div>
           {/* Side-swept bangs */}
           <div className="absolute top-2 left-3 w-10 h-6 bg-amber-600 rounded-br-full"></div>
           
           {/* Happy, confident facial features */}
-          <div className="absolute top-8 left-6 w-2 h-3 bg-gray-800 rounded-full"></div>
-          <div className="absolute top-8 right-6 w-2 h-3 bg-gray-800 rounded-full"></div>
+          <div className="absolute top-8 left-6 w-2 h-3 bg-gray-800 rounded-full animate-happy-blink"></div>
+          <div className="absolute top-8 right-6 w-2 h-3 bg-gray-800 rounded-full animate-happy-blink"></div>
           
           {/* Raised eyebrows showing interest */}
           <div className="absolute top-7 left-5 w-3 h-1 bg-amber-700 rounded-full transform rotate-12"></div>
@@ -448,11 +458,11 @@ const EducationTransformationBackground = () => {
           <div className="absolute top-10 left-1/2 transform -translate-x-1/2 w-1 h-2 bg-peach-500 rounded-full"></div>
           
           {/* Confident smile */}
-          <div className="absolute top-14 left-1/2 transform -translate-x-1/2 w-6 h-3 bg-gradient-to-b from-pink-400 to-pink-600 rounded-b-full border border-pink-500"></div>
+          <div className="absolute top-14 left-1/2 transform -translate-x-1/2 w-6 h-3 bg-gradient-to-b from-pink-400 to-pink-600 rounded-b-full border border-pink-500 animate-smile-glow"></div>
           
           {/* Healthy, happy cheeks */}
-          <div className="absolute top-11 left-3 w-3 h-3 bg-pink-200 rounded-full opacity-70"></div>
-          <div className="absolute top-11 right-3 w-3 h-3 bg-pink-200 rounded-full opacity-70"></div>
+          <div className="absolute top-11 left-3 w-3 h-3 bg-pink-200 rounded-full opacity-70 animate-happy-glow"></div>
+          <div className="absolute top-11 right-3 w-3 h-3 bg-pink-200 rounded-full opacity-70 animate-happy-glow"></div>
         </div>
         
         {/* Modern casual attire */}
@@ -461,20 +471,20 @@ const EducationTransformationBackground = () => {
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-20 h-8 bg-purple-400 rounded-b-lg border-b-2 border-purple-600"></div>
           
           {/* Hoodie strings */}
-          <div className="absolute top-0 left-8 w-1 h-12 bg-white rounded-full"></div>
-          <div className="absolute top-0 right-8 w-1 h-12 bg-white rounded-full"></div>
+          <div className="absolute top-0 left-8 w-1 h-12 bg-white rounded-full animate-string-sway"></div>
+          <div className="absolute top-0 right-8 w-1 h-12 bg-white rounded-full animate-string-sway" style={{animationDelay: '0.5s'}}></div>
           
           {/* Brand logo on hoodie */}
-          <div className="absolute top-6 left-1/2 transform -translate-x-1/2 w-8 h-6 bg-white rounded border border-gray-300">
-            <div className="absolute inset-1 bg-purple-600 rounded text-white text-xs flex items-center justify-center font-bold">AI</div>
+          <div className="absolute top-6 left-1/2 transform -translate-x-1/2 w-8 h-6 bg-white rounded border border-gray-300 animate-logo-glow">
+            <div className="absolute inset-1 bg-purple-600 rounded text-white text-xs flex items-center justify-center font-bold animate-logo-pulse">AI</div>
           </div>
           
           {/* Modern pouch/kangaroo pocket */}
           <div className="absolute top-16 left-1/2 transform -translate-x-1/2 w-16 h-8 bg-purple-600 rounded border border-purple-700"></div>
           
-          {/* Realistic arms */}
-          <div className="absolute -left-4 top-8 w-7 h-20 bg-gradient-to-b from-purple-500 to-purple-700 rounded-full transform rotate-12 border-2 border-white shadow-md"></div>
-          <div className="absolute -right-4 top-8 w-7 h-20 bg-gradient-to-b from-purple-500 to-purple-700 rounded-full transform -rotate-12 border-2 border-white shadow-md"></div>
+          {/* Realistic arms with confident posture */}
+          <div className="absolute -left-4 top-8 w-7 h-20 bg-gradient-to-b from-purple-500 to-purple-700 rounded-full transform rotate-12 border-2 border-white shadow-md animate-confident-gesture"></div>
+          <div className="absolute -right-4 top-8 w-7 h-20 bg-gradient-to-b from-purple-500 to-purple-700 rounded-full transform -rotate-12 border-2 border-white shadow-md animate-confident-gesture-right"></div>
           
           {/* Hands holding modern device */}
           <div className="absolute -left-2 top-24 w-4 h-4 bg-peach-400 rounded-full border border-peach-500"></div>
@@ -482,113 +492,117 @@ const EducationTransformationBackground = () => {
         </div>
         
         {/* Advanced tablet/device with ultra-realistic design */}
-        <div className="absolute top-24 left-1/2 transform -translate-x-1/2 w-14 h-10 bg-gradient-to-b from-gray-800 to-black rounded-lg shadow-2xl border-2 border-gray-600">
+        <div className="absolute top-24 left-1/2 transform -translate-x-1/2 w-14 h-10 bg-gradient-to-b from-gray-800 to-black rounded-lg shadow-2xl border-2 border-gray-600 animate-device-glow">
           {/* Screen with active interface */}
-          <div className="absolute inset-1 bg-gradient-to-br from-blue-300 via-cyan-400 to-blue-500 rounded-lg p-1 border border-gray-700">
-            <div className="w-full h-1 bg-white rounded mb-1 opacity-90 shadow-sm"></div>
-            <div className="w-3/4 h-1 bg-white rounded mb-1 opacity-80 shadow-sm"></div>
-            <div className="w-1/2 h-1 bg-white rounded mb-1 opacity-70 shadow-sm"></div>
+          <div className="absolute inset-1 bg-gradient-to-br from-blue-300 via-cyan-400 to-blue-500 rounded-lg p-1 border border-gray-700 animate-screen-activity">
+            <div className="w-full h-1 bg-white rounded mb-1 opacity-90 shadow-sm animate-interface-line-1"></div>
+            <div className="w-3/4 h-1 bg-white rounded mb-1 opacity-80 shadow-sm animate-interface-line-2"></div>
+            <div className="w-1/2 h-1 bg-white rounded mb-1 opacity-70 shadow-sm animate-interface-line-3"></div>
             
             {/* Interactive elements */}
             <div className="flex space-x-1 mt-1">
-              <div className="w-2 h-2 bg-green-300 rounded-full border border-green-500"></div>
-              <div className="w-2 h-2 bg-yellow-300 rounded-full border border-yellow-500"></div>
-              <div className="w-2 h-2 bg-red-300 rounded-full border border-red-500"></div>
+              <div className="w-2 h-2 bg-green-300 rounded-full border border-green-500 animate-app-pulse"></div>
+              <div className="w-2 h-2 bg-yellow-300 rounded-full border border-yellow-500 animate-app-pulse" style={{animationDelay: '0.3s'}}></div>
+              <div className="w-2 h-2 bg-red-300 rounded-full border border-red-500 animate-app-pulse" style={{animationDelay: '0.6s'}}></div>
             </div>
             
             {/* Screen glow effect */}
-            <div className="absolute inset-0 bg-cyan-300 rounded-lg opacity-20 animate-pulse"></div>
+            <div className="absolute inset-0 bg-cyan-300 rounded-lg opacity-20 animate-screen-glow"></div>
           </div>
           
           {/* Device frame details */}
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-4 h-1 bg-gray-600 rounded-full"></div>
-          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-6 h-1 bg-gray-600 rounded-full"></div>
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-4 h-1 bg-gray-600 rounded-full animate-device-detail"></div>
+          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-6 h-1 bg-gray-600 rounded-full animate-device-detail"></div>
         </div>
         
-        {/* Modern jeans */}
+        {/* Modern jeans with realistic details */}
         <div className="flex justify-center space-x-1 mt-1">
           <div className="w-5 h-20 bg-gradient-to-b from-blue-600 to-blue-800 rounded-lg border-2 border-white shadow-md">
-            <div className="absolute top-2 left-0 w-full h-1 bg-blue-400"></div>
+            <div className="absolute top-2 left-0 w-full h-1 bg-blue-400 animate-denim-fade"></div>
           </div>
           <div className="w-5 h-20 bg-gradient-to-b from-blue-600 to-blue-800 rounded-lg border-2 border-white shadow-md">
-            <div className="absolute top-2 left-0 w-full h-1 bg-blue-400"></div>
+            <div className="absolute top-2 left-0 w-full h-1 bg-blue-400 animate-denim-fade"></div>
           </div>
         </div>
         
-        {/* Modern sneakers */}
+        {/* Modern sneakers with brand details */}
         <div className="flex justify-center space-x-1 mt-1">
-          <div className="w-7 h-5 bg-gradient-to-b from-white to-gray-200 rounded-lg border border-gray-400 shadow-lg">
-            <div className="w-full h-2 bg-purple-500 rounded-t-lg"></div>
+          <div className="w-7 h-5 bg-gradient-to-b from-white to-gray-200 rounded-lg border border-gray-400 shadow-lg animate-sneaker-shine">
+            <div className="w-full h-2 bg-purple-500 rounded-t-lg animate-brand-glow"></div>
             <div className="absolute bottom-0 w-full h-1 bg-gray-800 rounded-b-lg"></div>
           </div>
-          <div className="w-7 h-5 bg-gradient-to-b from-white to-gray-200 rounded-lg border border-gray-400 shadow-lg">
-            <div className="w-full h-2 bg-purple-500 rounded-t-lg"></div>
+          <div className="w-7 h-5 bg-gradient-to-b from-white to-gray-200 rounded-lg border border-gray-400 shadow-lg animate-sneaker-shine">
+            <div className="w-full h-2 bg-purple-500 rounded-t-lg animate-brand-glow"></div>
             <div className="absolute bottom-0 w-full h-1 bg-gray-800 rounded-b-lg"></div>
           </div>
         </div>
       </div>
       
-      {/* Enhanced success and engagement indicators */}
+      {/* Enhanced success and engagement indicators with celebration animation */}
       <div className="absolute -top-16 -right-16 flex space-x-2">
-        <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-full animate-bounce flex items-center justify-center border-4 border-white shadow-2xl">
-          <span className="text-white font-bold text-sm">✓</span>
+        <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center border-4 border-white shadow-2xl animate-success-celebration">
+          <span className="text-white font-bold text-sm animate-checkmark-draw">✓</span>
         </div>
-        <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full animate-bounce flex items-center justify-center border-4 border-white shadow-2xl" style={{animationDelay: '0.3s'}}>
-          <span className="text-white font-bold text-xs">A+</span>
+        <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center border-4 border-white shadow-2xl animate-success-celebration" style={{animationDelay: '0.3s'}}>
+          <span className="text-white font-bold text-xs animate-grade-shine">A+</span>
         </div>
-        <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full animate-bounce flex items-center justify-center border-4 border-white shadow-2xl" style={{animationDelay: '0.6s'}}>
-          <span className="text-white font-bold text-sm">🎓</span>
+        <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center border-4 border-white shadow-2xl animate-success-celebration" style={{animationDelay: '0.6s'}}>
+          <span className="text-white font-bold text-sm animate-graduation-cap">🎓</span>
         </div>
       </div>
       
-      {/* Learning progress visualization */}
+      {/* Learning progress visualization with data animation */}
       <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        <div className="w-4 h-12 bg-gradient-to-t from-green-300 to-green-500 rounded-t-lg animate-pulse border-2 border-white shadow-lg"></div>
-        <div className="w-4 h-16 bg-gradient-to-t from-blue-300 to-blue-500 rounded-t-lg animate-pulse border-2 border-white shadow-lg" style={{animationDelay: '0.3s'}}></div>
-        <div className="w-4 h-14 bg-gradient-to-t from-purple-300 to-purple-500 rounded-t-lg animate-pulse border-2 border-white shadow-lg" style={{animationDelay: '0.6s'}}></div>
-        <div className="w-4 h-18 bg-gradient-to-t from-cyan-300 to-cyan-500 rounded-t-lg animate-pulse border-2 border-white shadow-lg" style={{animationDelay: '0.9s'}}></div>
+        <div className="w-4 h-12 bg-gradient-to-t from-green-300 to-green-500 rounded-t-lg border-2 border-white shadow-lg animate-progress-bar-1"></div>
+        <div className="w-4 h-16 bg-gradient-to-t from-blue-300 to-blue-500 rounded-t-lg border-2 border-white shadow-lg animate-progress-bar-2"></div>
+        <div className="w-4 h-14 bg-gradient-to-t from-purple-300 to-purple-500 rounded-t-lg border-2 border-white shadow-lg animate-progress-bar-3"></div>
+        <div className="w-4 h-18 bg-gradient-to-t from-cyan-300 to-cyan-500 rounded-t-lg border-2 border-white shadow-lg animate-progress-bar-4"></div>
       </div>
       
       {/* Confidence and happiness indicators */}
       <div className="absolute top-2 right-2 space-y-2">
-        <div className="w-3 h-3 bg-yellow-300 rounded-full opacity-90 animate-bounce border border-yellow-400 shadow-lg"></div>
-        <div className="w-3 h-3 bg-pink-300 rounded-full opacity-80 animate-bounce border border-pink-400 shadow-lg" style={{animationDelay: '0.4s'}}></div>
-        <div className="w-3 h-3 bg-cyan-300 rounded-full opacity-70 animate-bounce border border-cyan-400 shadow-lg" style={{animationDelay: '0.8s'}}></div>
+        <div className="w-3 h-3 bg-yellow-300 rounded-full opacity-90 border border-yellow-400 shadow-lg animate-sparkle-1"></div>
+        <div className="w-3 h-3 bg-pink-300 rounded-full opacity-80 border border-pink-400 shadow-lg animate-sparkle-2"></div>
+        <div className="w-3 h-3 bg-cyan-300 rounded-full opacity-70 border border-cyan-400 shadow-lg animate-sparkle-3"></div>
       </div>
     </div>
   );
 
   const getTransformationElements = () => {
+    const easingFactor = 0.1;
+    const smoothScale = (start, end, progress) => start + (end - start) * (1 - Math.cos(progress * Math.PI)) / 2;
+    const smoothOpacity = (start, end, progress) => start + (end - start) * progress;
+
     switch (transformationStage) {
       case 0:
         return {
           traditional: { opacity: 1, scale: 1 },
-          ai: { opacity: 0, scale: 0.5 },
-          modern: { opacity: 0, scale: 0.5 }
+          ai: { opacity: 0, scale: 0.3 },
+          modern: { opacity: 0, scale: 0.3 }
         };
       case 1:
         return {
-          traditional: { opacity: 0.7, scale: 0.9 },
-          ai: { opacity: 0.3, scale: 0.7 },
-          modern: { opacity: 0, scale: 0.5 }
+          traditional: { opacity: smoothOpacity(1, 0.6, 0.5), scale: smoothScale(1, 0.8, 0.5) },
+          ai: { opacity: smoothOpacity(0, 0.5, 0.7), scale: smoothScale(0.3, 0.8, 0.7) },
+          modern: { opacity: 0, scale: 0.3 }
         };
       case 2:
         return {
-          traditional: { opacity: 0.3, scale: 0.7 },
-          ai: { opacity: 0.8, scale: 0.9 },
-          modern: { opacity: 0.3, scale: 0.7 }
+          traditional: { opacity: smoothOpacity(0.6, 0.2, 0.8), scale: smoothScale(0.8, 0.6, 0.8) },
+          ai: { opacity: smoothOpacity(0.5, 1, 0.9), scale: smoothScale(0.8, 1, 0.9) },
+          modern: { opacity: smoothOpacity(0, 0.4, 0.6), scale: smoothScale(0.3, 0.7, 0.6) }
         };
       case 3:
         return {
-          traditional: { opacity: 0.1, scale: 0.5 },
+          traditional: { opacity: smoothOpacity(0.2, 0.05, 1), scale: smoothScale(0.6, 0.4, 1) },
           ai: { opacity: 1, scale: 1 },
-          modern: { opacity: 1, scale: 1 }
+          modern: { opacity: smoothOpacity(0.4, 1, 1), scale: smoothScale(0.7, 1, 1) }
         };
       default:
         return {
           traditional: { opacity: 1, scale: 1 },
-          ai: { opacity: 0, scale: 0.5 },
-          modern: { opacity: 0, scale: 0.5 }
+          ai: { opacity: 0, scale: 0.3 },
+          modern: { opacity: 0, scale: 0.3 }
         };
     }
   };
@@ -597,52 +611,60 @@ const EducationTransformationBackground = () => {
 
   return (
     <div ref={containerRef} className="absolute inset-0 w-full h-full bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 overflow-hidden">
-      {/* Enhanced floating particles */}
+      {/* Enhanced floating particles with improved physics */}
       {particles.map(particle => (
         <div
           key={particle.id}
-          className="absolute rounded-full bg-gradient-to-br from-white to-cyan-200"
+          className="absolute rounded-full bg-gradient-to-br from-white via-cyan-200 to-blue-300 animate-particle-twinkle"
           style={{
             left: `${particle.x}%`,
             top: `${particle.y}%`,
             width: `${particle.size}px`,
             height: `${particle.size}px`,
-            opacity: particle.opacity * 0.6,
-            boxShadow: '0 0 15px rgba(255,255,255,0.4), 0 0 25px rgba(0,255,255,0.2)'
+            opacity: particle.opacity * 0.8,
+            boxShadow: `0 0 ${particle.size * 3}px rgba(255,255,255,0.6), 0 0 ${particle.size * 6}px rgba(0,255,255,0.3)`,
+            animationDelay: `${particle.id * 0.1}s`
           }}
         />
       ))}
 
-      {/* Enhanced transformation arrow */}
+      {/* Enhanced transformation arrow with energy flow */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
         <div className="flex items-center space-x-6">
-          <div className="w-32 h-3 bg-gradient-to-r from-yellow-300 via-orange-400 to-red-500 rounded-full relative shadow-2xl border border-yellow-200">
-            <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-0 h-0 border-l-8 border-l-red-500 border-t-4 border-t-transparent border-b-4 border-b-transparent"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-yellow-200 via-orange-300 to-red-400 rounded-full animate-pulse opacity-60"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-white to-transparent rounded-full opacity-30"></div>
+          <div className="w-32 h-4 bg-gradient-to-r from-yellow-300 via-orange-400 to-red-500 rounded-full relative shadow-2xl border-2 border-yellow-200 animate-energy-flow">
+            <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-0 h-0 border-l-10 border-l-red-500 border-t-6 border-t-transparent border-b-6 border-b-transparent animate-arrow-pulse"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-yellow-200 via-orange-300 to-red-400 rounded-full animate-inner-flow opacity-60"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-white to-transparent rounded-full opacity-40 animate-light-sweep"></div>
+            {/* Energy particles */}
+            <div className="absolute top-1/2 left-2 w-2 h-2 bg-white rounded-full animate-energy-particle"></div>
+            <div className="absolute top-1/2 left-8 w-2 h-2 bg-white rounded-full animate-energy-particle" style={{animationDelay: '0.5s'}}></div>
+            <div className="absolute top-1/2 left-16 w-2 h-2 bg-white rounded-full animate-energy-particle" style={{animationDelay: '1s'}}></div>
           </div>
         </div>
       </div>
 
-      {/* All character elements with enhanced realism */}
+      {/* All character elements with enhanced realism and smooth transitions */}
       <TraditionalStudent opacity={elements.traditional.opacity} scale={elements.traditional.scale} />
       <TraditionalTeacher opacity={elements.traditional.opacity} scale={elements.traditional.scale} />
       <AITutor opacity={elements.ai.opacity} scale={elements.ai.scale} />
       <ModernStudent opacity={elements.modern.opacity} scale={elements.modern.scale} />
 
-      {/* Enhanced progress indicators */}
+      {/* Enhanced progress indicators with smooth transitions */}
       <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex space-x-6">
         {[0, 1, 2, 3].map(stage => (
           <div
             key={stage}
-            className={`w-5 h-5 rounded-full transition-all duration-500 border-3 border-white shadow-2xl ${
+            className={`w-6 h-6 rounded-full transition-all duration-700 ease-in-out border-4 border-white shadow-2xl ${
               transformationStage === stage 
-                ? 'bg-gradient-to-br from-cyan-300 to-cyan-500 scale-150 shadow-cyan-400/60' 
-                : 'bg-gradient-to-br from-gray-600 to-gray-800 hover:scale-110'
+                ? 'bg-gradient-to-br from-cyan-300 to-cyan-500 scale-150 shadow-cyan-400/80 animate-active-indicator' 
+                : 'bg-gradient-to-br from-gray-600 to-gray-800 hover:scale-110 animate-inactive-indicator'
             }`}
           />
         ))}
       </div>
+
+      {/* Ambient lighting effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-cyan-900/10 to-purple-900/20 animate-ambient-glow pointer-events-none"></div>
     </div>
   );
 };

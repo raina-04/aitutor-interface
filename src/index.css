@@ -1,105 +1,732 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-}
 
 @layer base {
   * {
     @apply border-border;
   }
-
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
   }
+}
+
+/* Enhanced Animation Keyframes */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-6px) rotate(1deg); }
+  50% { transform: translateY(-12px) rotate(0deg); }
+  75% { transform: translateY(-6px) rotate(-1deg); }
+}
+
+@keyframes subtle-sway {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(1deg); }
+  50% { transform: rotate(0deg); }
+  75% { transform: rotate(-1deg); }
+}
+
+@keyframes blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.9; }
+}
+
+@keyframes gentle-sway {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(2deg); }
+  75% { transform: rotate(-2deg); }
+}
+
+@keyframes glint {
+  0%, 100% { opacity: 1; box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+  50% { opacity: 0.7; box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); }
+}
+
+@keyframes arm-sway {
+  0%, 100% { transform: rotate(15deg); }
+  50% { transform: rotate(20deg); }
+}
+
+@keyframes arm-sway-reverse {
+  0%, 100% { transform: rotate(-15deg); }
+  50% { transform: rotate(-20deg); }
+}
+
+@keyframes book-weight {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(2px); }
+}
+
+@keyframes confused-bounce {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  25% { transform: translateY(-4px) scale(1.05); }
+  50% { transform: translateY(-8px) scale(1.1); }
+  75% { transform: translateY(-4px) scale(1.05); }
+}
+
+@keyframes sweat-drop {
+  0% { transform: translateY(0px) scale(1); opacity: 1; }
+  50% { transform: translateY(10px) scale(0.9); opacity: 0.8; }
+  100% { transform: translateY(20px) scale(0.8); opacity: 0; }
+}
+
+@keyframes professional-stance {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes glasses-glint {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.9; box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+}
+
+@keyframes lens-reflect {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes professional-blink {
+  0%, 85%, 100% { transform: scaleY(1); }
+  90% { transform: scaleY(0.1); }
+}
+
+@keyframes tie-flutter {
+  0%, 100% { transform: rotate(0deg) translateX(0px); }
+  25% { transform: rotate(1deg) translateX(1px); }
+  75% { transform: rotate(-1deg) translateX(-1px); }
+}
+
+@keyframes pattern-shimmer {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; box-shadow: 0 0 3px rgba(255, 215, 0, 0.5); }
+}
+
+@keyframes button-shine {
+  0%, 100% { box-shadow: 0 0 3px rgba(255, 215, 0, 0.3); }
+  50% { box-shadow: 0 0 8px rgba(255, 215, 0, 0.6); }
+}
+
+@keyframes pen-glint {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; box-shadow: 0 0 2px rgba(255, 255, 255, 0.5); }
+}
+
+@keyframes teaching-gesture {
+  0%, 100% { transform: rotate(45deg); }
+  50% { transform: rotate(50deg); }
+}
+
+@keyframes arm-rest {
+  0%, 100% { transform: rotate(-12deg); }
+  50% { transform: rotate(-8deg); }
+}
+
+@keyframes shoe-polish {
+  0%, 100% { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); }
+  50% { box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5); }
+}
+
+@keyframes leather-shine {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes blackboard-dust {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.95; }
+}
+
+@keyframes chalk-line {
+  0% { width: 0%; opacity: 0; }
+  100% { width: 100%; opacity: 1; }
+}
+
+@keyframes chalk-roll {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(180deg); }
+}
+
+@keyframes eraser-dust {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0.9; filter: blur(0.5px); }
+}
+
+@keyframes wood-grain {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.95; }
+}
+
+@keyframes pointer-tap {
+  0%, 100% { transform: rotate(45deg) translateY(0px); }
+  50% { transform: rotate(45deg) translateY(-2px); }
+}
+
+@keyframes ruler-mark {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes method-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* AI Tutor Animations */
+@keyframes ai-float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-8px) rotate(0.5deg); }
+  50% { transform: translateY(-16px) rotate(0deg); }
+  75% { transform: translateY(-8px) rotate(-0.5deg); }
+}
+
+@keyframes ai-core-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), 0 0 40px rgba(0, 255, 255, 0.1);
+  }
+  50% { 
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5), 0 0 60px rgba(0, 255, 255, 0.2);
+  }
+}
+
+@keyframes holo-ring-1 {
+  0%, 100% { 
+    opacity: 0.6; 
+    transform: scale(1); 
+    border-color: rgba(0, 255, 255, 0.6);
+  }
+  50% { 
+    opacity: 0.8; 
+    transform: scale(1.05); 
+    border-color: rgba(0, 255, 255, 0.8);
+  }
+}
+
+@keyframes holo-ring-2 {
+  0%, 100% { 
+    opacity: 0.8; 
+    transform: scale(1); 
+    border-color: rgba(59, 130, 246, 0.8);
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.05); 
+    border-color: rgba(59, 130, 246, 1);
+  }
+}
+
+@keyframes holo-ring-3 {
+  0%, 100% { 
+    opacity: 0.4; 
+    transform: scale(1); 
+    border-color: rgba(147, 51, 234, 0.4);
+  }
+  50% { 
+    opacity: 0.6; 
+    transform: scale(1.05); 
+    border-color: rgba(147, 51, 234, 0.6);
+  }
+}
+
+@keyframes ai-eye-glow {
+  0%, 100% { 
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+  }
+  50% { 
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+  }
+}
+
+@keyframes ai-iris {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes eye-reflection {
+  0%, 100% { opacity: 0.3; transform: translate(0px, 0px); }
+  50% { opacity: 0.6; transform: translate(1px, -1px); }
+}
+
+@keyframes ai-mouth {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-1px); }
+}
+
+@keyframes speech-wave {
+  0%, 100% { transform: scaleX(1); }
+  25% { transform: scaleX(1.1); }
+  50% { transform: scaleX(1.2); }
+  75% { transform: scaleX(1.1); }
+}
+
+@keyframes neural-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+}
+
+@keyframes circuit-flow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; box-shadow: 0 0 5px rgba(255, 255, 255, 0.3); }
+}
+
+@keyframes circuit-inner {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes orbital-1 {
+  0% { transform: rotate(0deg) translateX(60px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(60px) rotate(-360deg); }
+}
+
+@keyframes orbital-2 {
+  0% { transform: rotate(90deg) translateX(60px) rotate(-90deg); }
+  100% { transform: rotate(450deg) translateX(60px) rotate(-450deg); }
+}
+
+@keyframes orbital-3 {
+  0% { transform: rotate(180deg) translateX(60px) rotate(-180deg); }
+  100% { transform: rotate(540deg) translateX(60px) rotate(-540deg); }
+}
+
+@keyframes orbital-4 {
+  0% { transform: rotate(270deg) translateX(60px) rotate(-270deg); }
+  100% { transform: rotate(630deg) translateX(60px) rotate(-630deg); }
+}
+
+@keyframes orb-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; box-shadow: 0 0 8px rgba(255, 255, 255, 0.4); }
+}
+
+@keyframes icon-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes data-stream-horizontal {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+@keyframes data-flow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes data-particle {
+  0% { transform: translateX(0px); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(112px); opacity: 0; }
+}
+
+@keyframes data-particle-reverse {
+  0% { transform: translateX(0px); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(-112px); opacity: 0; }
+}
+
+@keyframes data-stream-vertical {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+@keyframes data-flow-vertical {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes holo-interface {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 1; }
+}
+
+@keyframes typing-line-1 {
+  0% { width: 0%; }
+  25% { width: 100%; }
+  100% { width: 100%; }
+}
+
+@keyframes typing-line-2 {
+  0%, 25% { width: 0%; }
+  50% { width: 80%; }
+  100% { width: 80%; }
+}
+
+@keyframes typing-line-3 {
+  0%, 50% { width: 0%; }
+  75% { width: 60%; }
+  100% { width: 60%; }
+}
+
+@keyframes typing-line-4 {
+  0%, 75% { width: 0%; }
+  100% { width: 66%; }
+}
+
+@keyframes status-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes holo-shimmer {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+  100% { opacity: 0.3; }
+}
+
+/* Modern Student Animations */
+@keyframes happy-bounce {
+  0%, 100% { transform: translateY(0px); }
+  25% { transform: translateY(-4px); }
+  50% { transform: translateY(-8px); }
+  75% { transform: translateY(-4px); }
+}
+
+@keyframes hair-sway {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(2deg); }
+  75% { transform: rotate(-2deg); }
+}
+
+@keyframes happy-blink {
+  0%, 80%, 100% { transform: scaleY(1); }
+  85% { transform: scaleY(0.1); }
+}
+
+@keyframes smile-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.9; box-shadow: 0 0 5px rgba(255, 182, 193, 0.3); }
+}
+
+@keyframes happy-glow {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0.9; }
+}
+
+@keyframes string-sway {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(3deg); }
+  75% { transform: rotate(-3deg); }
+}
+
+@keyframes logo-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.9; box-shadow: 0 0 5px rgba(255, 255, 255, 0.3); }
+}
+
+@keyframes logo-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes confident-gesture {
+  0%, 100% { transform: rotate(12deg); }
+  50% { transform: rotate(15deg); }
+}
+
+@keyframes confident-gesture-right {
+  0%, 100% { transform: rotate(-12deg); }
+  50% { transform: rotate(-15deg); }
+}
+
+@keyframes device-glow {
+  0%, 100% { 
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+  }
+  50% { 
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
+}
+
+@keyframes screen-activity {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.95; }
+}
+
+@keyframes interface-line-1 {
+  0% { width: 0%; }
+  20% { width: 100%; }
+  100% { width: 100%; }
+}
+
+@keyframes interface-line-2 {
+  0%, 20% { width: 0%; }
+  40% { width: 75%; }
+  100% { width: 75%; }
+}
+
+@keyframes interface-line-3 {
+  0%, 40% { width: 0%; }
+  60% { width: 50%; }
+  100% { width: 50%; }
+}
+
+@keyframes app-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(0.95); }
+}
+
+@keyframes screen-glow {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes device-detail {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.9; }
+}
+
+@keyframes denim-fade {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.9; }
+}
+
+@keyframes sneaker-shine {
+  0%, 100% { 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  50% { 
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  }
+}
+
+@keyframes brand-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.9; box-shadow: 0 0 5px rgba(147, 51, 234, 0.3); }
+}
+
+@keyframes success-celebration {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.1) rotate(5deg); }
+  50% { transform: scale(1.2) rotate(0deg); }
+  75% { transform: scale(1.1) rotate(-5deg); }
+}
+
+@keyframes checkmark-draw {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes grade-shine {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+}
+
+@keyframes graduation-cap {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(10deg); }
+}
+
+@keyframes progress-bar-1 {
+  0% { height: 0px; }
+  100% { height: 48px; }
+}
+
+@keyframes progress-bar-2 {
+  0% { height: 0px; }
+  100% { height: 64px; }
+}
+
+@keyframes progress-bar-3 {
+  0% { height: 0px; }
+  100% { height: 56px; }
+}
+
+@keyframes progress-bar-4 {
+  0% { height: 0px; }
+  100% { height: 72px; }
+}
+
+@keyframes sparkle-1 {
+  0%, 100% { opacity: 0.9; transform: scale(1) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+}
+
+@keyframes sparkle-2 {
+  0%, 100% { opacity: 0.8; transform: scale(1) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.1) rotate(-180deg); }
+}
+
+@keyframes sparkle-3 {
+  0%, 100% { opacity: 0.7; transform: scale(1) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.3) rotate(360deg); }
+}
+
+/* Enhanced Global Animations */
+@keyframes particle-twinkle {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes energy-flow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.9; }
+}
+
+@keyframes arrow-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes inner-flow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes light-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes energy-particle {
+  0% { transform: translateX(0px); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(128px); opacity: 0; }
+}
+
+@keyframes active-indicator {
+  0%, 100% { 
+    transform: scale(1.5); 
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.8);
+  }
+  50% { 
+    transform: scale(1.6); 
+    box-shadow: 0 0 25px rgba(6, 182, 212, 1);
+  }
+}
+
+@keyframes inactive-indicator {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes ambient-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+/* Apply Animations */
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-subtle-sway { animation: subtle-sway 4s ease-in-out infinite; }
+.animate-blink { animation: blink 3s ease-in-out infinite; }
+.animate-pulse-slow { animation: pulse-slow 3s ease-in-out infinite; }
+.animate-gentle-sway { animation: gentle-sway 3s ease-in-out infinite; }
+.animate-glint { animation: glint 2s ease-in-out infinite; }
+.animate-arm-sway { animation: arm-sway 4s ease-in-out infinite; }
+.animate-arm-sway-reverse { animation: arm-sway-reverse 4s ease-in-out infinite; }
+.animate-book-weight { animation: book-weight 2s ease-in-out infinite; }
+.animate-confused-bounce { animation: confused-bounce 1s ease-in-out infinite; }
+.animate-sweat-drop { animation: sweat-drop 2s ease-in-out infinite; }
+
+.animate-professional-stance { animation: professional-stance 5s ease-in-out infinite; }
+.animate-glasses-glint { animation: glasses-glint 3s ease-in-out infinite; }
+.animate-lens-reflect { animation: lens-reflect 2s ease-in-out infinite; }
+.animate-professional-blink { animation: professional-blink 4s ease-in-out infinite; }
+.animate-tie-flutter { animation: tie-flutter 3s ease-in-out infinite; }
+.animate-pattern-shimmer { animation: pattern-shimmer 2s ease-in-out infinite; }
+.animate-button-shine { animation: button-shine 3s ease-in-out infinite; }
+.animate-pen-glint { animation: pen-glint 2s ease-in-out infinite; }
+.animate-teaching-gesture { animation: teaching-gesture 4s ease-in-out infinite; }
+.animate-arm-rest { animation: arm-rest 5s ease-in-out infinite; }
+.animate-shoe-polish { animation: shoe-polish 3s ease-in-out infinite; }
+.animate-leather-shine { animation: leather-shine 2s ease-in-out infinite; }
+.animate-blackboard-dust { animation: blackboard-dust 4s ease-in-out infinite; }
+.animate-chalk-line { animation: chalk-line 3s ease-in-out forwards; }
+.animate-chalk-roll { animation: chalk-roll 4s ease-in-out infinite; }
+.animate-eraser-dust { animation: eraser-dust 3s ease-in-out infinite; }
+.animate-wood-grain { animation: wood-grain 5s ease-in-out infinite; }
+.animate-pointer-tap { animation: pointer-tap 2s ease-in-out infinite; }
+.animate-ruler-mark { animation: ruler-mark 3s ease-in-out infinite; }
+.animate-method-pulse { animation: method-pulse 2s ease-in-out infinite; }
+
+.animate-ai-float { animation: ai-float 8s ease-in-out infinite; }
+.animate-ai-core-pulse { animation: ai-core-pulse 4s ease-in-out infinite; }
+.animate-holo-ring-1 { animation: holo-ring-1 3s ease-in-out infinite; }
+.animate-holo-ring-2 { animation: holo-ring-2 3.5s ease-in-out infinite; }
+.animate-holo-ring-3 { animation: holo-ring-3 4s ease-in-out infinite; }
+.animate-ai-eye-glow { animation: ai-eye-glow 3s ease-in-out infinite; }
+.animate-ai-iris { animation: ai-iris 2s ease-in-out infinite; }
+.animate-eye-reflection { animation: eye-reflection 3s ease-in-out infinite; }
+.animate-ai-mouth { animation: ai-mouth 4s ease-in-out infinite; }
+.animate-speech-wave { animation: speech-wave 2s ease-in-out infinite; }
+.animate-neural-pulse { animation: neural-pulse 2s ease-in-out infinite; }
+.animate-circuit-flow { animation: circuit-flow 3s ease-in-out infinite; }
+.animate-circuit-inner { animation: circuit-inner 2s ease-in-out infinite; }
+.animate-orbital-1 { animation: orbital-1 15s linear infinite; }
+.animate-orbital-2 { animation: orbital-2 18s linear infinite; }
+.animate-orbital-3 { animation: orbital-3 20s linear infinite; }
+.animate-orbital-4 { animation: orbital-4 22s linear infinite; }
+.animate-orb-glow { animation: orb-glow 2s ease-in-out infinite; }
+.animate-icon-pulse { animation: icon-pulse 2s ease-in-out infinite; }
+.animate-data-stream-horizontal { animation: data-stream-horizontal 3s ease-in-out infinite; }
+.animate-data-flow { animation: data-flow 3s ease-in-out infinite; }
+.animate-data-particle { animation: data-particle 2s ease-in-out infinite; }
+.animate-data-particle-reverse { animation: data-particle-reverse 2s ease-in-out infinite; }
+.animate-data-stream-vertical { animation: data-stream-vertical 3s ease-in-out infinite; }
+.animate-data-flow-vertical { animation: data-flow-vertical 3s ease-in-out infinite; }
+.animate-holo-interface { animation: holo-interface 4s ease-in-out infinite; }
+.animate-typing-line-1 { animation: typing-line-1 4s ease-in-out infinite; }
+.animate-typing-line-2 { animation: typing-line-2 4s ease-in-out infinite; }
+.animate-typing-line-3 { animation: typing-line-3 4s ease-in-out infinite; }
+.animate-typing-line-4 { animation: typing-line-4 4s ease-in-out infinite; }
+.animate-status-blink { animation: status-blink 2s ease-in-out infinite; }
+.animate-holo-shimmer { animation: holo-shimmer 3s ease-in-out infinite; }
+
+.animate-happy-bounce { animation: happy-bounce 3s ease-in-out infinite; }
+.animate-hair-sway { animation: hair-sway 4s ease-in-out infinite; }
+.animate-happy-blink { animation: happy-blink 3s ease-in-out infinite; }
+.animate-smile-glow { animation: smile-glow 3s ease-in-out infinite; }
+.animate-happy-glow { animation: happy-glow 2s ease-in-out infinite; }
+.animate-string-sway { animation: string-sway 3s ease-in-out infinite; }
+.animate-logo-glow { animation: logo-glow 3s ease-in-out infinite; }
+.animate-logo-pulse { animation: logo-pulse 2s ease-in-out infinite; }
+.animate-confident-gesture { animation: confident-gesture 4s ease-in-out infinite; }
+.animate-confident-gesture-right { animation: confident-gesture-right 4s ease-in-out infinite; }
+.animate-device-glow { animation: device-glow 3s ease-in-out infinite; }
+.animate-screen-activity { animation: screen-activity 4s ease-in-out infinite; }
+.animate-interface-line-1 { animation: interface-line-1 4s ease-in-out infinite; }
+.animate-interface-line-2 { animation: interface-line-2 4s ease-in-out infinite; }
+.animate-interface-line-3 { animation: interface-line-3 4s ease-in-out infinite; }
+.animate-app-pulse { animation: app-pulse 2s ease-in-out infinite; }
+.animate-screen-glow { animation: screen-glow 3s ease-in-out infinite; }
+.animate-device-detail { animation: device-detail 4s ease-in-out infinite; }
+.animate-denim-fade { animation: denim-fade 5s ease-in-out infinite; }
+.animate-sneaker-shine { animation: sneaker-shine 3s ease-in-out infinite; }
+.animate-brand-glow { animation: brand-glow 3s ease-in-out infinite; }
+.animate-success-celebration { animation: success-celebration 2s ease-in-out infinite; }
+.animate-checkmark-draw { animation: checkmark-draw 1s ease-in-out infinite; }
+.animate-grade-shine { animation: grade-shine 2s ease-in-out infinite; }
+.animate-graduation-cap { animation: graduation-cap 3s ease-in-out infinite; }
+.animate-progress-bar-1 { animation: progress-bar-1 3s ease-in-out infinite; }
+.animate-progress-bar-2 { animation: progress-bar-2 3s ease-in-out infinite; }
+.animate-progress-bar-3 { animation: progress-bar-3 3s ease-in-out infinite; }
+.animate-progress-bar-4 { animation: progress-bar-4 3s ease-in-out infinite; }
+.animate-sparkle-1 { animation: sparkle-1 2s ease-in-out infinite; }
+.animate-sparkle-2 { animation: sparkle-2 2.5s ease-in-out infinite; }
+.animate-sparkle-3 { animation: sparkle-3 3s ease-in-out infinite; }
+
+.animate-particle-twinkle { animation: particle-twinkle 2s ease-in-out infinite; }
+.animate-energy-flow { animation: energy-flow 4s ease-in-out infinite; }
+.animate-arrow-pulse { animation: arrow-pulse 2s ease-in-out infinite; }
+.animate-inner-flow { animation: inner-flow 2s ease-in-out infinite; }
+.animate-light-sweep { animation: light-sweep 3s ease-in-out infinite; }
+.animate-energy-particle { animation: energy-particle 2s ease-in-out infinite; }
+.animate-active-indicator { animation: active-indicator 2s ease-in-out infinite; }
+.animate-inactive-indicator { animation: inactive-indicator 3s ease-in-out infinite; }
+.animate-ambient-glow { animation: ambient-glow 8s ease-in-out infinite; }
+
+/* Hardware acceleration for smooth animations */
+.transform-gpu {
+  transform: translateZ(0);
+  will-change: transform, opacity, filter;
 }
