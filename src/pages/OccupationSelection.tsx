@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
 import { ChevronRight, Briefcase, User, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import EducationBackground from '../components/EducationBackground';
+import OccupationBackground from '../components/OccupationBackground';
 import { useNavigate } from 'react-router-dom';
 
 interface FormData {
@@ -108,7 +107,7 @@ export default function OccupationSelection() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <EducationBackground />
+      <OccupationBackground />
 
       <div className="relative z-20 min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-2xl">
