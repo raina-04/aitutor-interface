@@ -1,7 +1,7 @@
-
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, User, Brain } from 'lucide-react';
 import EducationBackground from '../components/EducationBackground';
+import { useNavigate } from 'react-router-dom';
 
 interface FormData {
   email: string;
@@ -18,6 +18,8 @@ interface FormErrors {
 }
 
 export default function AuthPage() {
+  const navigate = useNavigate();
+
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -85,7 +87,12 @@ export default function AuthPage() {
       fullName: ''
     });
     
-    alert(isLogin ? 'Login successful!' : 'Account created successfully!');
+    // Navigate to occupation selection for new users, or show success for login
+    if (!isLogin) {
+      navigate('/occupation');
+    } else {
+      alert('Login successful!');
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
