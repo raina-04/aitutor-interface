@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ChevronRight, Briefcase, User, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -66,8 +65,8 @@ export default function OccupationSelection() {
     
     setIsLoading(false);
     
-    // For now, just show success - in real app, would navigate to dashboard
-    alert('Profile setup complete! Welcome to AI Tutor.');
+    // Navigate to dashboard
+    navigate('/dashboard');
   };
 
   const isFormValid = formData.occupation && formData.jobPosition && formData.experience;
