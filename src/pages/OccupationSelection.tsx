@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import { ChevronRight, Briefcase, User, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import OccupationBackground from '../components/OccupationBackground';
@@ -9,41 +10,9 @@ import { useNavigate } from 'react-router-dom';
 
 interface FormData {
   occupation: string;
-  jobRole: string;
+  jobPosition: string;
   experience: string;
 }
-
-const occupations = [
-  'Technology & Software',
-  'Healthcare & Medicine',
-  'Education & Training',
-  'Business & Finance',
-  'Engineering & Manufacturing',
-  'Marketing & Sales',
-  'Design & Creative',
-  'Legal & Compliance',
-  'Research & Development',
-  'Customer Service',
-  'Operations & Logistics',
-  'Student',
-  'Other'
-];
-
-const jobRolesByOccupation: Record<string, string[]> = {
-  'Technology & Software': ['Software Developer', 'Data Scientist', 'UI/UX Designer', 'DevOps Engineer', 'Product Manager', 'QA Engineer', 'Systems Administrator'],
-  'Healthcare & Medicine': ['Doctor', 'Nurse', 'Pharmacist', 'Medical Technician', 'Healthcare Administrator', 'Physical Therapist', 'Medical Researcher'],
-  'Education & Training': ['Teacher', 'Professor', 'Training Coordinator', 'Educational Consultant', 'Curriculum Developer', 'Academic Administrator'],
-  'Business & Finance': ['Financial Analyst', 'Accountant', 'Business Analyst', 'Project Manager', 'Consultant', 'Investment Advisor', 'Operations Manager'],
-  'Engineering & Manufacturing': ['Mechanical Engineer', 'Electrical Engineer', 'Civil Engineer', 'Manufacturing Engineer', 'Quality Engineer', 'Process Engineer'],
-  'Marketing & Sales': ['Marketing Manager', 'Sales Representative', 'Digital Marketer', 'Content Creator', 'Brand Manager', 'Sales Manager'],
-  'Design & Creative': ['Graphic Designer', 'Web Designer', 'Art Director', 'Creative Director', 'Illustrator', 'Photographer'],
-  'Legal & Compliance': ['Lawyer', 'Legal Assistant', 'Compliance Officer', 'Paralegal', 'Legal Consultant'],
-  'Research & Development': ['Research Scientist', 'Lab Technician', 'R&D Manager', 'Product Developer', 'Research Analyst'],
-  'Customer Service': ['Customer Support Representative', 'Customer Success Manager', 'Technical Support', 'Call Center Agent'],
-  'Operations & Logistics': ['Operations Manager', 'Supply Chain Analyst', 'Logistics Coordinator', 'Warehouse Manager'],
-  'Student': ['High School Student', 'Undergraduate Student', 'Graduate Student', 'PhD Candidate'],
-  'Other': ['Freelancer', 'Entrepreneur', 'Retired', 'Job Seeker', 'Career Changer']
-};
 
 const experienceLevels = [
   { value: 'entry', label: 'Entry Level (0-2 years)' },
@@ -57,7 +26,7 @@ export default function OccupationSelection() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     occupation: '',
-    jobRole: '',
+    jobPosition: '',
     experience: ''
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -65,15 +34,14 @@ export default function OccupationSelection() {
   const handleOccupationChange = (value: string) => {
     setFormData(prev => ({
       ...prev,
-      occupation: value,
-      jobRole: '' // Reset job role when occupation changes
+      occupation: value
     }));
   };
 
-  const handleJobRoleChange = (value: string) => {
+  const handleJobPositionChange = (value: string) => {
     setFormData(prev => ({
       ...prev,
-      jobRole: value
+      jobPosition: value
     }));
   };
 
@@ -87,7 +55,7 @@ export default function OccupationSelection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.occupation || !formData.jobRole || !formData.experience) {
+    if (!formData.occupation || !formData.jobPosition || !formData.experience) {
       return;
     }
 
@@ -102,8 +70,7 @@ export default function OccupationSelection() {
     alert('Profile setup complete! Welcome to AI Tutor.');
   };
 
-  const isFormValid = formData.occupation && formData.jobRole && formData.experience;
-  const availableJobRoles = formData.occupation ? jobRolesByOccupation[formData.occupation] || [] : [];
+  const isFormValid = formData.occupation && formData.jobPosition && formData.experience;
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -151,89 +118,67 @@ export default function OccupationSelection() {
                 </div>
               </div>
 
-              {/* Occupation Selection */}
+              {/* Job/Occupation Input */}
               <div className="space-y-4">
                 <label className="block text-lg font-semibold text-slate-100 mb-3">
-                  What's your field of work or study?
+                  What's your job or field of work/study?
                 </label>
-                <Select value={formData.occupation} onValueChange={handleOccupationChange}>
-                  <SelectTrigger className="w-full h-14 bg-slate-900/50 backdrop-blur-sm border-slate-600 text-white hover:bg-slate-900/70 transition-all duration-200">
-                    <div className="flex items-center">
-                      <Briefcase className="w-5 h-5 text-slate-400 mr-3" />
-                      <SelectValue placeholder="Select your occupation field" />
-                    </div>
-                  </SelectTrigger>
-                  <SelectContent className="bg-slate-800 border-slate-600">
-                    {occupations.map((occupation) => (
-                      <SelectItem 
-                        key={occupation} 
-                        value={occupation}
-                        className="text-white hover:bg-slate-700 focus:bg-slate-700"
-                      >
-                        {occupation}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="relative">
+                  <Briefcase className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <Input
+                    type="text"
+                    placeholder="e.g., Software Developer, Teacher, Marketing Manager, Student"
+                    value={formData.occupation}
+                    onChange={(e) => handleOccupationChange(e.target.value)}
+                    className="w-full h-14 pl-12 bg-slate-900/50 backdrop-blur-sm border-slate-600 text-white placeholder:text-slate-400 hover:bg-slate-900/70 focus:bg-slate-900/70 transition-all duration-200"
+                  />
+                </div>
               </div>
 
-              {/* Job Role Selection */}
-              {formData.occupation && (
-                <div className="space-y-4 animate-in slide-in-from-bottom-4 duration-300">
-                  <label className="block text-lg font-semibold text-slate-100 mb-3">
-                    What's your current role?
-                  </label>
-                  <Select value={formData.jobRole} onValueChange={handleJobRoleChange}>
-                    <SelectTrigger className="w-full h-14 bg-slate-900/50 backdrop-blur-sm border-slate-600 text-white hover:bg-slate-900/70 transition-all duration-200">
-                      <div className="flex items-center">
-                        <User className="w-5 h-5 text-slate-400 mr-3" />
-                        <SelectValue placeholder="Select your job role" />
-                      </div>
-                    </SelectTrigger>
-                    <SelectContent className="bg-slate-800 border-slate-600">
-                      {availableJobRoles.map((role) => (
-                        <SelectItem 
-                          key={role} 
-                          value={role}
-                          className="text-white hover:bg-slate-700 focus:bg-slate-700"
-                        >
-                          {role}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+              {/* Job Position Input */}
+              <div className="space-y-4">
+                <label className="block text-lg font-semibold text-slate-100 mb-3">
+                  What's your specific job position or title?
+                </label>
+                <div className="relative">
+                  <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <Input
+                    type="text"
+                    placeholder="e.g., Senior Developer, Elementary Teacher, Marketing Director"
+                    value={formData.jobPosition}
+                    onChange={(e) => handleJobPositionChange(e.target.value)}
+                    className="w-full h-14 pl-12 bg-slate-900/50 backdrop-blur-sm border-slate-600 text-white placeholder:text-slate-400 hover:bg-slate-900/70 focus:bg-slate-900/70 transition-all duration-200"
+                  />
                 </div>
-              )}
+              </div>
 
               {/* Experience Level Selection */}
-              {formData.jobRole && (
-                <div className="space-y-4 animate-in slide-in-from-bottom-4 duration-300">
-                  <label className="block text-lg font-semibold text-slate-100 mb-4">
-                    What's your experience level?
-                  </label>
-                  <RadioGroup 
-                    value={formData.experience} 
-                    onValueChange={handleExperienceChange}
-                    className="space-y-3"
-                  >
-                    {experienceLevels.map((level) => (
-                      <div key={level.value} className="flex items-center space-x-3 p-4 rounded-xl bg-slate-900/30 border border-slate-700/50 hover:bg-slate-900/50 transition-all duration-200 cursor-pointer">
-                        <RadioGroupItem 
-                          value={level.value} 
-                          id={level.value}
-                          className="border-slate-500 text-cyan-500"
-                        />
-                        <Label 
-                          htmlFor={level.value} 
-                          className="text-slate-200 font-medium cursor-pointer flex-1"
-                        >
-                          {level.label}
-                        </Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
-                </div>
-              )}
+              <div className="space-y-4">
+                <label className="block text-lg font-semibold text-slate-100 mb-4">
+                  What's your experience level?
+                </label>
+                <RadioGroup 
+                  value={formData.experience} 
+                  onValueChange={handleExperienceChange}
+                  className="space-y-3"
+                >
+                  {experienceLevels.map((level) => (
+                    <div key={level.value} className="flex items-center space-x-3 p-4 rounded-xl bg-slate-900/30 border border-slate-700/50 hover:bg-slate-900/50 transition-all duration-200 cursor-pointer">
+                      <RadioGroupItem 
+                        value={level.value} 
+                        id={level.value}
+                        className="border-slate-500 text-cyan-500"
+                      />
+                      <Label 
+                        htmlFor={level.value} 
+                        className="text-slate-200 font-medium cursor-pointer flex-1"
+                      >
+                        {level.label}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              </div>
 
               {/* Submit Button */}
               <div className="pt-6">
